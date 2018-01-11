@@ -8,3 +8,7 @@ The goal is to create a bot that can track it's own movements, if we have time.
 
 Changes:
  + monitoring package: a package for the navx sensor class we're writing
+
+Things to add:
+ + virtual joysticks, to create accurate path follower
+    + Turn to heading
