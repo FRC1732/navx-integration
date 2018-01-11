@@ -11,6 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -50,9 +51,13 @@ public class Robot extends IterativeRobot {
 		    initializeSubsystems();
 		    oi = new OI();
 		    //c.setClosedLoopControl(true);
-		    ahrs = new AHRS(SPI.Port.kMXP);
+		    ahrs = new AHRS(Port.kMXP);
+		    System.out.println(ahrs.isConnected());
+		    System.out.println("THE THING DIDNOT FAIL!!1!");
 		} catch (Exception e) {
 		    e.printStackTrace();
+		    System.out.println(e);
+		    System.out.println(e.getMessage());
 		}
 	}
 
@@ -125,7 +130,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		System.out.println("YO, THE ROBOT IS TELEOP-ING THOUGH");
+		//System.out.println("YO, THE ROBOT IS TELEOP-ING THOUGH");
 		Scheduler.getInstance().run();
 	}
 

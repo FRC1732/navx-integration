@@ -11,7 +11,7 @@ public class RobotMap {
 	public static final int LEFT_JOYSTICK_Y_AXIS = 1;
     public static final int RIGHT_JOYSTICK_Y_AXIS = 1;
 
-    public static final int LEFT_JOYSTICK_USB = 2;
+    public static final int LEFT_JOYSTICK_USB = 0;
     public static final int RIGHT_JOYSTICK_USB = 1;
     
     //Solenoid
