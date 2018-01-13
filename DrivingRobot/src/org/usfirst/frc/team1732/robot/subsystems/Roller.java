@@ -22,7 +22,7 @@ public class Roller extends Subsystem {
 		super(NAME);
 	}
 	
-	private final Solenoid rollerPosition	= new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.ROLLER_SOLENOID_DEVICE_NUMBER);
+//	private final Solenoid rollerPosition	= new Solenoid(RobotMap.PCM_CAN_ID, RobotMap.ROLLER_SOLENOID_DEVICE_NUMBER);
 	private final TalonSRX roller = new TalonSRX(RobotMap.ROLLER_MOTOR_DEVICE_NUMBER);
 	
 	public static final boolean	UP		= false;
@@ -34,12 +34,12 @@ public class Roller extends Subsystem {
     }
     
     public void setDown(){
-    	rollerPosition.set(DOWN);
+//    	rollerPosition.set(DOWN);
 		roller.set(ControlMode.PercentOutput, 1);
     }
     
     public void setUp(){
-    	rollerPosition.set(UP);
+//    	rollerPosition.set(UP);
     	roller.set(ControlMode.PercentOutput, 0);
     }
 }

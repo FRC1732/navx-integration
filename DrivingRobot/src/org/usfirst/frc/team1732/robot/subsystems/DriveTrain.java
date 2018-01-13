@@ -73,5 +73,12 @@ public class DriveTrain extends Subsystem {
 		leftMaster.set(ControlMode.PercentOutput, multiplier*left);
 		rightMaster.set(ControlMode.PercentOutput, multiplier*right);
 	}
+	
+	//AUTON
+	private static final double autoSpped = 100;
+	public void rotate(double d){
+		leftMaster.set(ControlMode.PercentOutput, -Math.min(d/autoSpped, 0.5));
+		rightMaster.set(ControlMode.PercentOutput, Math.min(d/autoSpped, 0.5));
+    }
 
 }

@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team1732.robot;
 
+import org.usfirst.frc.team1732.robot.commands.PointTurns;
 import org.usfirst.frc.team1732.robot.monitoring.PositionMonitoring;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.ExampleSubsystem;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,6 +35,7 @@ public class Robot extends IterativeRobot {
     public static Grabber grabber;
     public static Roller roller;
     public static AHRS ahrs;
+    public static PositionMonitoring pm;
     
     //Compressor c = new Compressor(0);
 
@@ -54,11 +57,20 @@ public class Robot extends IterativeRobot {
 		    ahrs = new AHRS(Port.kMXP);
 		    System.out.println(ahrs.isConnected());
 		    System.out.println("THE THING DIDNOT FAIL!!1!");
+		    pm = new PositionMonitoring(ahrs);
+		    new Thread(pm).start();
 		} catch (Exception e) {
 		    e.printStackTrace();
 		    System.out.println(e);
 		    System.out.println(e.getMessage());
 		}
+	}
+	
+	private long time;
+	
+	public void robotPeriodic() {
+		SmartDashboard.putNumber("Execution Time", System.currentTimeMillis() - time);
+		time = System.currentTimeMillis();
 	}
 
 	/**
@@ -89,8 +101,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = chooser.getSelected();
-
+		autonomousCommand = new PointTurns(pm);
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -121,8 +132,7 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().removeAll(); // Cancels commands
 		//DriveWithJoysticks cb = new DriveWithJoysticks();
 		//cb.start();
-		PositionMonitoring pm = new PositionMonitoring(ahrs);
-		pm.start();
+		
 	}
 
 	/**
