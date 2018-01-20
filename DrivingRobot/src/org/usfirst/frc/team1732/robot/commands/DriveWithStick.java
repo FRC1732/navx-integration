@@ -2,6 +2,9 @@ package org.usfirst.frc.team1732.robot.commands;
 
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 import static org.usfirst.frc.team1732.robot.Robot.oi;
+
+import org.usfirst.frc.team1732.robot.Robot;
+
 import static org.usfirst.frc.team1732.robot.Robot.navx;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,6 +18,7 @@ public class DriveWithStick extends Command {
 	public DriveWithStick() {
 		super("Drive With Stick");
 		requires(driveTrain);
+		Robot.ahrs.zeroYaw();
 	}
 
 	// Called repeatedly when this Command is scheduled to run

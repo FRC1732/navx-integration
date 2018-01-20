@@ -10,13 +10,29 @@ import org.usfirst.frc.team1732.robot.Robot;
  */
 public class TurnToAngle extends Command {
 	
-	public int stop = 0;
-	public double angle = 0;
-	public double range = 4;
+	private int stop = 0;
+	private double angle = 0;
+	private final double range = 4;
 	
+	public double getAngle() {
+		return angle;
+	}
+
+	public void setAngle(double angle) {
+		this.angle = angle;
+	}
+
 	public TurnToAngle(double angle) {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.driveTrain);
+		this.angle = angle;
+	}
+	
+	public TurnToAngle(double angle, boolean master) {
+		// Use requires() here to declare subsystem dependencies
+		if(master) {
+			requires(Robot.driveTrain);
+		}
 		this.angle = angle;
 	}
 
@@ -50,6 +66,10 @@ public class TurnToAngle extends Command {
 			stop++;
 		}
 		
+	}
+	
+	public void runSync() {
+		execute();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

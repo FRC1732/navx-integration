@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1732.robot.subsystems;
 
+import org.omg.CORBA.TRANSACTION_UNAVAILABLE;
 import org.usfirst.frc.team1732.robot.RobotMap;
 import org.usfirst.frc.team1732.robot.commands.DriveWithArcade;
 import org.usfirst.frc.team1732.robot.commands.DriveWithJoysticks;
@@ -21,12 +22,14 @@ public class DriveTrain extends Subsystem {
 	// here. Call these from Commands.
 
 	public static final String NAME = "Drive Train";
+	private TurnToAngle angleControl;
 
 	//CONTROL SHIFT F IS YOUR FRIEND
 	
 	public DriveTrain() {
 		super(NAME);
 		configureTalons();
+		angleControl = new TurnToAngle(0, false);
 	}
 
 	private final TalonSRX leftMaster = new TalonSRX(RobotMap.LEFT_MASTER_MOTOR_DEVICE_NUMBER);
@@ -69,6 +72,7 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public void driveWithArcade(double turn, double throttle) {
+		turn = turn * -1;
 		leftMaster.set(ControlMode.PercentOutput, multiplier * (throttle/2 + turn/2));
 		rightMaster.set(ControlMode.PercentOutput, multiplier * (throttle/2 - turn/2));
 		//I'll be real, I don't even know
@@ -85,18 +89,14 @@ public class DriveTrain extends Subsystem {
 		
 		boolean close = (angle >= destinationAngle - PRECISION && angle <= destinationAngle + PRECISION);
 		
-		while(!close){ //While the angle is not close to the destination angle
-			new TurnToAngle(destinationAngle); //Turn to the destination angle
-			if(close){
-				//If the angle is near the destination angle:
-				//180 >= 48 && 180 <= 52
-				//50 >= 49 && 50 <= 51
-				break; //Stop rotating...
-			}
+		if(!close) {
+			angleControl.setAngle(destinationAngle);
+			angleControl.runSync();
+		}else {
+			//And instead, go forward at the speed of the hypotenuse of the triangle
+			leftMaster.set(ControlMode.PercentOutput, multiplier*speed);
+			rightMaster.set(ControlMode.PercentOutput, multiplier*speed);
 		}
-		//And instead, go forward at the speed of the hypotenuse of the triangle
-		leftMaster.set(ControlMode.PercentOutput, multiplier*speed);
-		rightMaster.set(ControlMode.PercentOutput, multiplier*speed);
 	}
 	
 	/*
