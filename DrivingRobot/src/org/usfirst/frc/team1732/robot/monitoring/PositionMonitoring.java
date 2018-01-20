@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team1732.robot.monitoring;
 
+import org.usfirst.frc.team1732.robot.Robot;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -43,7 +45,7 @@ public class PositionMonitoring implements Runnable {
 	        /* path for upgrading from the Kit-of-Parts gyro to the navx-MXP */
 	        
 	        //YOY THIS IS A THING!!!!!!!!!!!!!!!!!!!!
-	        SmartDashboard.putNumber("IMU_TotalYaw", ahrs.getAngle());
+	        SmartDashboard.putNumber("IMU_TotalYaw", Robot.navx.getHeading());
 	        SmartDashboard.putNumber("IMU_YawRateDPS", ahrs.getRate());
 	        
 	        /* Display Processed Acceleration Data (Linear Acceleration, Motion Detect) */

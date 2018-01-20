@@ -25,8 +25,8 @@ public class DriveTrain extends Subsystem {
 	public static final String NAME = "Drive Train";
 	private TurnToAngle angleControl;
 
-	//CONTROL SHIFT F IS YOUR FRIEND
-	
+	// CONTROL SHIFT F IS YOUR FRIEND
+
 	public DriveTrain() {
 		super(NAME);
 		configureTalons();
@@ -46,7 +46,7 @@ public class DriveTrain extends Subsystem {
 		left1.setInverted(true);
 		left2.setInverted(true);
 		rightMaster.setInverted(false);
-		
+
 		left1.set(ControlMode.Follower, leftMaster.getDeviceID());
 		left2.set(ControlMode.Follower, leftMaster.getDeviceID());
 		right1.set(ControlMode.Follower, rightMaster.getDeviceID());
@@ -57,89 +57,94 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void initDefaultCommand() {
-		//setDefaultCommand(new DriveWithJoysticks());
-//		setDefaultCommand(new DriveWithArcade());
+		// setDefaultCommand(new DriveWithJoysticks());
+		// setDefaultCommand(new DriveWithArcade());
 		setDefaultCommand(new DriveWithStick());
 	}
-	
+
 	private static final double PRECISION = 10;
-	//using 50% speed
+	// using 50% speed
 	private static final double multiplier = 0.5;
-	
+
 	public void driveWithJoysticks(double left, double right) {
-		leftMaster.set(ControlMode.PercentOutput, multiplier*left);
-		//Go forward on the left side as much the left throttle is pushed upwards
-		rightMaster.set(ControlMode.PercentOutput, multiplier*right);
-		//Go forward on the right side as much the right throttle is pushed upwards
+		leftMaster.set(ControlMode.PercentOutput, multiplier * left);
+		// Go forward on the left side as much the left throttle is pushed upwards
+		rightMaster.set(ControlMode.PercentOutput, multiplier * right);
+		// Go forward on the right side as much the right throttle is pushed upwards
 	}
-	
+
 	public void driveWithArcade(double turn, double throttle) {
 		turn = turn * -1;
 		leftMaster.set(ControlMode.PercentOutput, multiplier * (throttle + turn));
 		rightMaster.set(ControlMode.PercentOutput, multiplier * (throttle - turn));
-		//I'll be real, I don't even know
+		// I'll be real, I don't even know
 	}
-	
-	
+
 	private boolean close = false;
+
 	public void driveWithStick(double x, double y, double angle) {
 		x = -x;
-		double destinationAngle = Math.atan(y / x); //finds angle currently turned to
-		if(x < 0){ //Account for negative x (domain of arctangent)
+		double destinationAngle = Math.atan(y / x); // finds angle currently turned to
+		if (destinationAngle < 0) {
+			destinationAngle = Math.PI * 2 + destinationAngle;
+		}
+
+		if (x < 0) { // Account for negative x (domain of arctangent)
 			destinationAngle += Math.PI;
 		}
-		if(x == 0) {
+		if (Math.abs(x) < 0.1) {
 			close = true;
 		}
-		destinationAngle = Math.toDegrees(destinationAngle);
+		destinationAngle = Math.toDegrees(destinationAngle) % 360;
 		SmartDashboard.putNumber("DestAngle", destinationAngle);
-		double speed = -Math.sqrt(x*x + y*y); //Finds hypotenuse of triangle
-		
-		
-		//if not close, then run turn to angle
-		if(!close) {
+		double speed = -Math.sqrt(x * x + y * y); // Finds hypotenuse of triangle
+
+		// if not close, then run turn to angle
+		if (!close) {
 			angleControl.setAngle(destinationAngle);
 			angleControl.runSync();
-			//if angleControl hit target, close = true
-			if(angleControl.isDone()) {
+			// if angleControl hit target, close = true
+			if (angleControl.isDone()) {
 				close = true;
 			}
-		}else {
-			//if close, recheck close, and run forward
+
+		} else {
+			// if close, recheck close, and run forward
 			close = Math.abs(destinationAngle - angle) <= PRECISION;
-			//And instead, go forward at the speed of the hypotenuse of the triangle
-			leftMaster.set(ControlMode.PercentOutput, multiplier*speed);
-			rightMaster.set(ControlMode.PercentOutput, multiplier*speed);
+			// And instead, go forward at the speed of the hypotenuse of the triangle
+			leftMaster.set(ControlMode.PercentOutput, multiplier * speed);
+			rightMaster.set(ControlMode.PercentOutput, multiplier * speed);
 		}
 	}
-	
+
 	/*
 	 * AUTON BEGINS BELOW HERE
 	 */
-	
-	//AUTON Pommes
+
+	// AUTON Pommes
 	private static final double autoSpped = 100;
-	public void rotate(double d){
-		leftMaster.set(ControlMode.PercentOutput, -Math.min(d/autoSpped, 0.5));
-		rightMaster.set(ControlMode.PercentOutput, Math.min(d/autoSpped, 0.5));
-    }
-	
-	//AUTON Visaya
-	public void rotateCW(double speed){
-		//Left is inverted
+
+	public void rotate(double d) {
+		leftMaster.set(ControlMode.PercentOutput, -Math.min(d / autoSpped, 0.5));
+		rightMaster.set(ControlMode.PercentOutput, Math.min(d / autoSpped, 0.5));
+	}
+
+	// AUTON Visaya
+	public void rotateCW(double speed) {
+		// Left is inverted
 		leftMaster.set(ControlMode.PercentOutput, -speed);
 		rightMaster.set(ControlMode.PercentOutput, speed);
-    }
-	
-	public void rotateCCW(double speed){
-		//Right is inverted
+	}
+
+	public void rotateCCW(double speed) {
+		// Right is inverted
 		leftMaster.set(ControlMode.PercentOutput, speed);
 		rightMaster.set(ControlMode.PercentOutput, -speed);
 	}
-	
-	public void stop(){
+
+	public void stop() {
 		leftMaster.set(ControlMode.PercentOutput, 0);
 		rightMaster.set(ControlMode.PercentOutput, 0);
-    }
+	}
 
 }

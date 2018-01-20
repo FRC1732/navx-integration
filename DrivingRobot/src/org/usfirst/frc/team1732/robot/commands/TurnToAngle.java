@@ -58,6 +58,11 @@ public class TurnToAngle extends Command {
 			speed = (Math.abs(heading - angle) / (range * 1.5)) / 2;
 		}
 		
+		//if the diffrence is > 180, turn the other way
+		if(Math.abs(heading - angle) > 180) {
+			speed = -speed;
+		}
+		
 		if (heading < (angle - range / 2.0)) {
 			Robot.driveTrain.rotateCW(speed);
 			stop = 0;

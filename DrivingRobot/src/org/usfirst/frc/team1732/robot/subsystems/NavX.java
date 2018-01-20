@@ -28,7 +28,13 @@ public class NavX{
 	}
 
 	public double getHeading() {
-		heading = navx.getAngle();
+		heading = navx.getAngle() % 360;
+		System.out.println(navx.getAngle());
+		System.out.println(navx.getAngleAdjustment());
+		System.out.println(heading);
+		if(heading < 0) {
+			heading = 360 + heading;
+		}
 		return heading;
 	}
 }
