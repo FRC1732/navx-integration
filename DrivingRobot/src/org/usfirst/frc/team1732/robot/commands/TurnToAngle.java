@@ -14,6 +14,8 @@ public class TurnToAngle extends Command {
 	private double angle = 0;
 	private final double range = 4;
 	
+	private boolean master = true;
+	
 	public double getAngle() {
 		return angle;
 	}
@@ -34,6 +36,7 @@ public class TurnToAngle extends Command {
 			requires(Robot.driveTrain);
 		}
 		this.angle = angle;
+		this.master = master;
 	}
 
 	// Called just before this Command runs the first time
@@ -74,6 +77,9 @@ public class TurnToAngle extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
+		return stop > 5;
+	}
+	public boolean isDone() {
 		return stop > 5;
 	}
 

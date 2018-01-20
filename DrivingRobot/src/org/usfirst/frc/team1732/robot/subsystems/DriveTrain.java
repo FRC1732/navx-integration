@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -57,11 +58,12 @@ public class DriveTrain extends Subsystem {
 
 	public void initDefaultCommand() {
 		//setDefaultCommand(new DriveWithJoysticks());
-		setDefaultCommand(new DriveWithArcade());
-		//setDefaultCommand(new DriveWithStick());
+//		setDefaultCommand(new DriveWithArcade());
+		setDefaultCommand(new DriveWithStick());
 	}
 	
-	private static final double PRECISION = 1;
+	private static final double PRECISION = 10;
+	//using 50% speed
 	private static final double multiplier = 0.5;
 	
 	public void driveWithJoysticks(double left, double right) {
@@ -78,21 +80,33 @@ public class DriveTrain extends Subsystem {
 		//I'll be real, I don't even know
 	}
 	
+	
+	private boolean close = false;
 	public void driveWithStick(double x, double y, double angle) {
+		x = -x;
 		double destinationAngle = Math.atan(y / x); //finds angle currently turned to
 		if(x < 0){ //Account for negative x (domain of arctangent)
 			destinationAngle += Math.PI;
 		}
-		double x2 = Math.pow(x, 2); //Holds value x^2
-		double y2 = Math.pow(y, 2); //Holds value y^2
-		double speed = Math.sqrt(x2 + y2); //Finds hypotenuse of triangle
+		if(x == 0) {
+			close = true;
+		}
+		destinationAngle = Math.toDegrees(destinationAngle);
+		SmartDashboard.putNumber("DestAngle", destinationAngle);
+		double speed = -Math.sqrt(x*x + y*y); //Finds hypotenuse of triangle
 		
-		boolean close = (angle >= destinationAngle - PRECISION && angle <= destinationAngle + PRECISION);
 		
+		//if not close, then run turn to angle
 		if(!close) {
 			angleControl.setAngle(destinationAngle);
 			angleControl.runSync();
+			//if angleControl hit target, close = true
+			if(angleControl.isDone()) {
+				close = true;
+			}
 		}else {
+			//if close, recheck close, and run forward
+			close = Math.abs(destinationAngle - angle) <= PRECISION;
 			//And instead, go forward at the speed of the hypotenuse of the triangle
 			leftMaster.set(ControlMode.PercentOutput, multiplier*speed);
 			rightMaster.set(ControlMode.PercentOutput, multiplier*speed);
