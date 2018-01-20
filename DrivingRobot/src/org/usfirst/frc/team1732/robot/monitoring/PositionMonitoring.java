@@ -13,8 +13,7 @@ public class PositionMonitoring implements Runnable {
 	private AHRS ahrs;
 	
 	public PositionMonitoring(AHRS ahrs) {
-		this.ahrs = ahrs;
-		
+		this.ahrs = ahrs;	
 	}
 	
 	private long time;
@@ -45,7 +44,6 @@ public class PositionMonitoring implements Runnable {
 	        
 	        //YOY THIS IS A THING!!!!!!!!!!!!!!!!!!!!
 	        SmartDashboard.putNumber("IMU_TotalYaw", ahrs.getAngle());
-	        heading = ahrs.getAngle();
 	        SmartDashboard.putNumber("IMU_YawRateDPS", ahrs.getRate());
 	        
 	        /* Display Processed Acceleration Data (Linear Acceleration, Motion Detect) */

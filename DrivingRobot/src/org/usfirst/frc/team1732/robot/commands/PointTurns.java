@@ -29,10 +29,12 @@ public class PointTurns extends Command {
     		angle = 360 + angle;
     	}
     	SmartDashboard.putNumber("Heading", angle);
-    	if(angle < 90) {
-    		Robot.driveTrain.rotate(Math.abs(90-angle));
+    	if(angle < 80) {
+    		Robot.driveTrain.rotateCW(0.5);
+    	}else if(angle > 120) {
+    		Robot.driveTrain.rotateCCW(0.5);
     	}else {
-    		Robot.driveTrain.driveWithJoysticks(0, 0);
+    		Robot.driveTrain.stop();
     	}
     }
 

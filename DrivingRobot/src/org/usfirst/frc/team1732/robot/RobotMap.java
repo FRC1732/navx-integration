@@ -10,6 +10,9 @@ public class RobotMap {
 	//Joysticks
 	public static final int LEFT_JOYSTICK_Y_AXIS = 1;
     public static final int RIGHT_JOYSTICK_Y_AXIS = 1;
+    
+    public static final int LEFT_JOYSTICK_X_AXIS = 0;
+    public static final int RIGHT_JOYSTICK_X_AXIS = 0;
 
     public static final int LEFT_JOYSTICK_USB = 0;
     public static final int RIGHT_JOYSTICK_USB = 1;
@@ -29,8 +32,10 @@ public class RobotMap {
     //Grabber
     public static final int GRABBER_SOLENOID_DEVICE_NUMBER = 0;
     
+    
     //Roller
     public static final int ROLLER_SOLENOID_DEVICE_NUMBER = 3;
     public static final int ROLLER_MOTOR_DEVICE_NUMBER = 12;
+    
     
 }

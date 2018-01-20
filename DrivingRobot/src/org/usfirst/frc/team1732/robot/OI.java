@@ -30,7 +30,7 @@ public class OI {
 		//Roller
 		roller.whenPressed(new RollerSetDown());
 		roller.whenReleased(new RollerSetUp());
-	}    
+	}    //Nate was here
     
     public double getLeftSpeed() {
     	//return -controller.getRawAxis(1);// for use with game controller
@@ -42,5 +42,13 @@ public class OI {
     	//return -controller.getRawAxis(3);// for use with game controller
     	return right.getRawAxis(RobotMap.RIGHT_JOYSTICK_Y_AXIS);
     	// return -buttons.getRawAxis(3);
+    }
+    
+    public double getLeftTurn() {
+    	return left.getRawAxis(RobotMap.LEFT_JOYSTICK_X_AXIS);
+    }
+    
+    public double getRightTurn() {
+    	return right.getRawAxis(RobotMap.RIGHT_JOYSTICK_X_AXIS);
     }
 }

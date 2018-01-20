@@ -1,11 +1,16 @@
 
 package org.usfirst.frc.team1732.robot;
 
+import org.usfirst.frc.team1732.robot.commands.AutonRotate;
+import org.usfirst.frc.team1732.robot.commands.AutonRotate2;
 import org.usfirst.frc.team1732.robot.commands.PointTurns;
+import org.usfirst.frc.team1732.robot.commands.Pause;
+import org.usfirst.frc.team1732.robot.commands.TurnToAngle;
 import org.usfirst.frc.team1732.robot.monitoring.PositionMonitoring;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team1732.robot.subsystems.Grabber;
+import org.usfirst.frc.team1732.robot.subsystems.NavX;
 import org.usfirst.frc.team1732.robot.subsystems.Roller;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -27,17 +32,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	
+
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
 	public static OI oi;
-    public static DriveTrain driveTrain;
-    public static Grabber grabber;
-    public static Roller roller;
-    public static AHRS ahrs;
-    public static PositionMonitoring pm;
-    
-    //Compressor c = new Compressor(0);
+	public static DriveTrain driveTrain;
+	public static Grabber grabber;
+	public static Roller roller;
+	public static AHRS ahrs;
+	public static PositionMonitoring pm;
+	public static NavX navx;
+
+	// Compressor c = new Compressor(0);
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -50,24 +56,29 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		System.out.println("YO, THE ROBOT IS STARTING THOUGH");
 		try {
-		    System.out.println("Robot turning on");
-		    initializeSubsystems();
-		    oi = new OI();
-		    //c.setClosedLoopControl(true);
-		    ahrs = new AHRS(Port.kMXP);
-		    System.out.println(ahrs.isConnected());
-		    System.out.println("THE THING DIDNOT FAIL!!1!");
-		    pm = new PositionMonitoring(ahrs);
-		    new Thread(pm).start();
+			System.out.println("Robot turning on");
+			// c.setClosedLoopControl(true);
+			//ahrs = new AHRS(Port.kMXP);
+			ahrs = new AHRS(SPI.Port.kMXP);
+			
+			System.out.println(ahrs.isConnected());
+			System.out.println("THE THING DIDNOT FAIL!!1!");
+			pm = new PositionMonitoring(ahrs);
+			new Thread(pm).start();
+			
+			initializeSubsystems();
+			oi = new OI();
+			navx = new NavX(ahrs);
+			
 		} catch (Exception e) {
-		    e.printStackTrace();
-		    System.out.println(e);
-		    System.out.println(e.getMessage());
+			e.printStackTrace();
+			System.out.println(e);
+			System.out.println(e.getMessage());
 		}
 	}
-	
+
 	private long time;
-	
+
 	public void robotPeriodic() {
 		SmartDashboard.putNumber("Execution Time", System.currentTimeMillis() - time);
 		time = System.currentTimeMillis();
@@ -101,7 +112,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = new PointTurns(pm);
+		/*
+		 * PUT AUTONOMOUS COMMANDS BELOW HERE:
+		 */
+
+		//autonomousCommand = new PointTurns(pm);
+		autonomousCommand = new AutonRotate2();
+
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -110,8 +127,9 @@ public class Robot extends IterativeRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (autonomousCommand != null)
+		if (autonomousCommand != null){
 			autonomousCommand.start();
+		}
 	}
 
 	/**
@@ -130,9 +148,10 @@ public class Robot extends IterativeRobot {
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		Scheduler.getInstance().removeAll(); // Cancels commands
-		//DriveWithJoysticks cb = new DriveWithJoysticks();
-		//cb.start();
 		
+		// DriveWithJoysticks cb = new DriveWithJoysticks();
+		// cb.start();
+
 	}
 
 	/**
@@ -140,7 +159,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		//System.out.println("YO, THE ROBOT IS TELEOP-ING THOUGH");
+		// System.out.println("YO, THE ROBOT IS TELEOP-ING THOUGH");
 		Scheduler.getInstance().run();
 	}
 
@@ -149,10 +168,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		LiveWindow.run();
+		//LiveWindow.run();
 	}
-	
-	public void initializeSubsystems(){
+
+	public void initializeSubsystems() {
 		System.out.println("Subsystems Initialized");
 		driveTrain = new DriveTrain();
 		grabber = new Grabber();
