@@ -142,6 +142,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
+		ahrs.zeroYaw();
 		System.out.println("teleopInit Called");
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
