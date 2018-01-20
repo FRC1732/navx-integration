@@ -62,7 +62,7 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private static final double PRECISION = 1;
-	private static final double multiplier = 0.7;
+	private static final double multiplier = 0.5;
 	
 	public void driveWithJoysticks(double left, double right) {
 		leftMaster.set(ControlMode.PercentOutput, multiplier*left);
@@ -73,8 +73,8 @@ public class DriveTrain extends Subsystem {
 	
 	public void driveWithArcade(double turn, double throttle) {
 		turn = turn * -1;
-		leftMaster.set(ControlMode.PercentOutput, multiplier * (throttle/2 + turn/2));
-		rightMaster.set(ControlMode.PercentOutput, multiplier * (throttle/2 - turn/2));
+		leftMaster.set(ControlMode.PercentOutput, multiplier * (throttle + turn));
+		rightMaster.set(ControlMode.PercentOutput, multiplier * (throttle - turn));
 		//I'll be real, I don't even know
 	}
 	
