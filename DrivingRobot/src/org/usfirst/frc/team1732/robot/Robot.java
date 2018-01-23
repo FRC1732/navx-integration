@@ -3,6 +3,7 @@ package org.usfirst.frc.team1732.robot;
 
 import org.usfirst.frc.team1732.robot.commands.AutonRotate;
 import org.usfirst.frc.team1732.robot.commands.AutonRotate2;
+import org.usfirst.frc.team1732.robot.commands.DrivingAroundLikeHentaiLord;
 import org.usfirst.frc.team1732.robot.commands.PointTurns;
 import org.usfirst.frc.team1732.robot.commands.Pause;
 import org.usfirst.frc.team1732.robot.commands.TurnToAngle;
@@ -63,13 +64,14 @@ public class Robot extends IterativeRobot {
 			
 			System.out.println(ahrs.isConnected());
 			System.out.println("THE THING DIDNOT FAIL!!1!");
-			pm = new PositionMonitoring(ahrs);
-			new Thread(pm).start();
 			
 			initializeSubsystems();
+			System.out.println(driveTrain.leftEncoder);
 			oi = new OI();
-			navx = new NavX(ahrs);
-			
+//			navx = new NavX(ahrs);
+			pm = new PositionMonitoring(ahrs);
+
+			new Thread(pm).start();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e);
@@ -117,7 +119,8 @@ public class Robot extends IterativeRobot {
 		 */
 
 		//autonomousCommand = new PointTurns(pm);
-		autonomousCommand = new AutonRotate2();
+		//autonomousCommand = new AutonRotate2();
+		autonomousCommand = new DrivingAroundLikeHentaiLord();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -173,9 +176,9 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void initializeSubsystems() {
-		System.out.println("Subsystems Initialized");
 		driveTrain = new DriveTrain();
 		grabber = new Grabber();
 		roller = new Roller();
+		System.out.println("Subsystems Initialized");
 	}
 }

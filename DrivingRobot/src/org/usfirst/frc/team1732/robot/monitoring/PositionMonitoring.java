@@ -16,9 +16,12 @@ public class PositionMonitoring implements Runnable {
 	
 	public PositionMonitoring(AHRS ahrs) {
 		this.ahrs = ahrs;	
+		Robot.driveTrain.leftEncoder.setDistancePerPulse(1);
+		Robot.driveTrain.rightEncoder.setDistancePerPulse(1);
 	}
 	
 	private long time;
+	private int count = 0;
 	
 	@Override
 	public void run() {
@@ -26,12 +29,22 @@ public class PositionMonitoring implements Runnable {
 			SmartDashboard.putNumber("NavXExecutionTime", System.currentTimeMillis() - time);
 			time = System.currentTimeMillis();
 	        //System.out.println(ahrs.isConnected());
-	        /* Display 6-axis Processed Angle Data */
-	        SmartDashboard.putBoolean("IMU_Connected", ahrs.isConnected());
-	        SmartDashboard.putBoolean("IMU_IsCalibrating", ahrs.isCalibrating());
-	        SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
-	        SmartDashboard.putNumber("IMU_Pitch", ahrs.getPitch());
-	        SmartDashboard.putNumber("IMU_Roll", ahrs.getRoll());
+			
+			if(ahrs != null) {
+				/* Display 6-axis Processed Angle Data */
+		        SmartDashboard.putBoolean("IMU_Connected", ahrs.isConnected());
+		        SmartDashboard.putBoolean("IMU_IsCalibrating", ahrs.isCalibrating());
+		        SmartDashboard.putNumber("IMU_Yaw", ahrs.getYaw());
+		        SmartDashboard.putNumber("IMU_Pitch", ahrs.getPitch());
+		        SmartDashboard.putNumber("IMU_Roll", ahrs.getRoll());
+			}
+
+			SmartDashboard.putNumber("Encoder_left", Robot.driveTrain.leftEncoder.getPosition());
+	        SmartDashboard.putNumber("Encoder_right", Robot.driveTrain.rightEncoder.getPosition());
+			SmartDashboard.putNumber("Encoder_leftp", Robot.driveTrain.leftEncoder.getPulses());
+	        SmartDashboard.putNumber("Encoder_rightp", Robot.driveTrain.rightEncoder.getPulses());
+			
+	        SmartDashboard.putNumber("Count", count++);
 	        
 	        /* Display tilt-corrected, Magnetometer-based heading (requires */
 	        /* magnetometer calibration to be useful) */
@@ -45,7 +58,7 @@ public class PositionMonitoring implements Runnable {
 	        /* path for upgrading from the Kit-of-Parts gyro to the navx-MXP */
 	        
 	        //YOY THIS IS A THING!!!!!!!!!!!!!!!!!!!!
-	        SmartDashboard.putNumber("IMU_TotalYaw", Robot.navx.getHeading());
+//	        SmartDashboard.putNumber("IMU_TotalYaw", Robot.navx.getHeading());
 	        SmartDashboard.putNumber("IMU_YawRateDPS", ahrs.getRate());
 	        
 	        /* Display Processed Acceleration Data (Linear Acceleration, Motion Detect) */

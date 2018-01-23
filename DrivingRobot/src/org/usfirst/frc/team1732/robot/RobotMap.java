@@ -21,13 +21,19 @@ public class RobotMap {
     public static final int PCM_CAN_ID = 0;
     
     //Drivetrain
-    public static final int LEFT_MASTER_MOTOR_DEVICE_NUMBER = 21;
-    public static final int LEFT_1_MOTOR_DEVICE_NUMBER = 20;
-    public static final int LEFT_2_MOTOR_DEVICE_NUMBER = 19;
+    public static final int LEFT_MASTER_MOTOR_DEVICE_NUMBER = 5;
+    public static final int LEFT_1_MOTOR_DEVICE_NUMBER = 6;
+    public static final int LEFT_2_MOTOR_DEVICE_NUMBER = 7;
 
-    public static final int RIGHT_MASTER_MOTOR_DEVICE_NUMBER = 15;
-    public static final int RIGHT_1_MOTOR_DEVICE_NUMBER = 14;
-    public static final int RIGHT_2_MOTOR_DEVICE_NUMBER = 13;
+    public static final int RIGHT_MASTER_MOTOR_DEVICE_NUMBER = 0;
+    public static final int RIGHT_1_MOTOR_DEVICE_NUMBER = 1;
+    public static final int RIGHT_2_MOTOR_DEVICE_NUMBER = 2;
+    
+    //Encoders
+    public static final int LEFT_ENCODER_CHANNEL_A = 2;
+    public static final int LEFT_ENCODER_CHANNEL_B = 3;
+    public static final int RIGHT_ENCODER_CHANNEL_A = 0;
+    public static final int RIGHT_ENCODER_CHANNEL_B = 1;
     
     //Grabber
     public static final int GRABBER_SOLENOID_DEVICE_NUMBER = 0;

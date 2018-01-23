@@ -7,22 +7,17 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AutonRotate2 extends CommandGroup {
+public class DrivingAroundLikeHentaiLord extends CommandGroup {
 
-	public AutonRotate2() {
-		// Add Commands here:
-		// e.g. addSequential(new Command1());
-		// addSequential(new Command2());
-		// these will run in order.
-		Robot.ahrs.zeroYaw();
-
-		addSequential(new TurnToAngle(50));
-		addSequential(new Pause(5000));
-		addSequential(new TurnToAngle(-30));
-		addSequential(new Pause(5000));
-		addSequential(new TurnToAngle(270));
-		addSequential(new Pause(5000));
-		addSequential(new TurnToAngle(-10));
+	public DrivingAroundLikeHentaiLord() {
+		addSequential(new DriveWithEncoders(5));
+		addSequential(new Pause(10000));
+		addSequential(new DriveWithEncoders(-5));
+		addSequential(new Pause(10000));
+		addSequential(new DriveWithEncoders(15));
+		addSequential(new Pause(10000));
+		addSequential(new DriveWithEncoders(-10));
+		addSequential(new Pause(10000));
 
 		// To run multiple commands at the same time,
 		// use addParallel()
