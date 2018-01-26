@@ -3,6 +3,8 @@ package org.usfirst.frc.team1732.robot;
 
 import org.usfirst.frc.team1732.robot.commands.AutonRotate;
 import org.usfirst.frc.team1732.robot.commands.AutonRotate2;
+import org.usfirst.frc.team1732.robot.commands.AutonRotate3;
+import org.usfirst.frc.team1732.robot.commands.DriveInCircle;
 import org.usfirst.frc.team1732.robot.commands.DrivingAroundLikeHentaiLord;
 import org.usfirst.frc.team1732.robot.commands.PointTurns;
 import org.usfirst.frc.team1732.robot.commands.Pause;
@@ -66,7 +68,7 @@ public class Robot extends IterativeRobot {
 			System.out.println("THE THING DIDNOT FAIL!!1!");
 			
 			initializeSubsystems();
-			System.out.println(driveTrain.leftEncoder);
+			// System.out.println(driveTrain.leftEncoder);
 			oi = new OI();
 //			navx = new NavX(ahrs);
 			pm = new PositionMonitoring(ahrs);
@@ -121,6 +123,8 @@ public class Robot extends IterativeRobot {
 		//autonomousCommand = new PointTurns(pm);
 		//autonomousCommand = new AutonRotate2();
 		autonomousCommand = new DrivingAroundLikeHentaiLord();
+		//autonomousCommand = new AutonRotate3();
+		//autonomousCommand = new DriveInCircle(10, true);
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",

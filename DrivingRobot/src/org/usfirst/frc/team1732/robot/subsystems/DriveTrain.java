@@ -2,6 +2,7 @@ package org.usfirst.frc.team1732.robot.subsystems;
 
 //import org.omg.CORBA.TRANSACTION_UNAVAILABLE;
 import org.usfirst.frc.team1732.robot.RobotMap;
+import org.usfirst.frc.team1732.robot.commands.DriveWithArcade;
 import org.usfirst.frc.team1732.robot.commands.DriveWithJoysticks;
 import org.usfirst.frc.team1732.robot.commands.TurnToAngle;
 
@@ -34,7 +35,8 @@ public class DriveTrain extends Subsystem {
 		angleControl = new TurnToAngle(0, false);
 	}
 
-	private final double INCHES_PER_PULSE = 1.0 / 520;
+	private final double INCHES_PER_PULSE = 1.0 / 100;
+	private final double ROBOT_DIAMETER = 26;
 
 	// Motor Declaration
 	private final TalonSRX leftMaster = new TalonSRX(RobotMap.LEFT_MASTER_MOTOR_DEVICE_NUMBER);
@@ -83,12 +85,12 @@ public class DriveTrain extends Subsystem {
 
 	private void configureEncoders() {
 		leftEncoder.setDistancePerPulse(INCHES_PER_PULSE);
-		leftEncoder.setDistancePerPulse(INCHES_PER_PULSE);
+		rightEncoder.setDistancePerPulse(INCHES_PER_PULSE);
 	}
 
 	public void initDefaultCommand() {
-		setDefaultCommand(new DriveWithJoysticks());
-		// setDefaultCommand(new DriveWithArcade());
+		// setDefaultCommand(new DriveWithJoysticks());
+		setDefaultCommand(new DriveWithArcade());
 		// setDefaultCommand(new DriveWithStick());
 	}
 
@@ -100,6 +102,10 @@ public class DriveTrain extends Subsystem {
 		leftMaster.set(ControlMode.PercentOutput, multiplier * left);
 		// Go forward on the left side as much the left throttle is pushed
 		// upwards
+		
+		System.out.println("Left Encoder Position" + leftEncoder.getDistance());
+		System.out.println("Right Encoder Position" + rightEncoder.getDistance());
+
 		rightMaster.set(ControlMode.PercentOutput, multiplier * right);
 		// Go forward on the right side as much the right throttle is pushed
 		// upwards
@@ -227,12 +233,35 @@ public class DriveTrain extends Subsystem {
 		leftMaster.set(ControlMode.PercentOutput, multiplier * speed);
 		rightMaster.set(ControlMode.PercentOutput, multiplier * speed);
 	}
+	
+	public void driveIndependant(double leftSpeed, double rightSpeed) {
+		leftMaster.set(ControlMode.PercentOutput, multiplier * leftSpeed);
+		rightMaster.set(ControlMode.PercentOutput, multiplier * rightSpeed);
+	}
 
 	public void stop() {
 		leftMaster.set(ControlMode.PercentOutput, 0);
 		rightMaster.set(ControlMode.PercentOutput, 0);
 	}
-
+	
+	public double getLeftEncoder() {
+		return leftEncoder.getDistance();
+	}
+	
+	public double getRightEncoder() {
+		return rightEncoder.getDistance();
+	}
+	
+	public double getRotateCircumference() {
+		return ROBOT_DIAMETER * Math.PI;
+	}
+	
+	public double getRobotRadius(){
+		return ROBOT_DIAMETER / 2;
+	}
+	
+	
+	//2017 AUTON
 	private static void voidMethod(double d) {
 	}
 

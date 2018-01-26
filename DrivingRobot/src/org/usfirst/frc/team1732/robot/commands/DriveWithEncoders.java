@@ -13,8 +13,8 @@ public class DriveWithEncoders extends Command {
 
 	private double inches;
 	
-	public static final EncoderReader leftReader = Robot.driveTrain.leftEncoder.makeReader();
-	public static final EncoderReader rightReader = Robot.driveTrain.rightEncoder.makeReader();
+	//public static final EncoderReader leftReader = Robot.driveTrain.leftEncoder.makeReader();
+	//public static final EncoderReader rightReader = Robot.driveTrain.rightEncoder.makeReader();
 	
     public DriveWithEncoders(double inches) {
         requires(Robot.driveTrain);
@@ -23,8 +23,8 @@ public class DriveWithEncoders extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {   	
-    	leftReader.zero();
-    	rightReader.zero();
+    	//leftReader.zero();
+    	//rightReader.zero();
     	
     	if(inches < 0){
     		Robot.driveTrain.drive(-1);
@@ -46,14 +46,15 @@ public class DriveWithEncoders extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         if(inches > 0){ //croc boss
-        	return leftReader.getPosition() > inches && rightReader.getPosition() > inches;
+        	//return leftReader.getPosition() > inches && rightReader.getPosition() > inches;
         }
         if(inches < 0){
-        	return leftReader.getPosition() < inches && rightReader.getPosition() < inches;
+        	//return leftReader.getPosition() < inches && rightReader.getPosition() < inches;
         }
         else{
         	return true;
         }
+        return false;
         
         /*
          * 				>.<
