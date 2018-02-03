@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class DriveWithEncoders extends Command {
 	
 	public static double P = 0.6;
-	public static double I = 0.0;
+	public static double I = 0.1;
 	public static double D = 0.6;
 	
 	public static double DIVISOR = 0.4;
@@ -33,7 +33,7 @@ public class DriveWithEncoders extends Command {
 		@Override
 		public double pidGet() {
 			double val =  (inches - Robot.driveTrain.getLeftDistance()) / (inches*DIVISOR);
-			System.out.println("Left PIDGet: " + val);
+//			System.out.println("Left PIDGet: " + val);
 			return val;
 		}
 		
