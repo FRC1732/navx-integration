@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1732.robot.commands;
 
-import org.usfirst.frc.team1732.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -11,7 +9,7 @@ public class DrivingAroundLikeHentaiLord extends CommandGroup {
 
 	public DrivingAroundLikeHentaiLord() {
 		System.out.println("This is happening, but you're just wrong, kiddo.");
-		addSequential(new DriveWithEncoders(36));
+		addSequential(new DriveWithEncoders(DriveWithEncoders.INCHES));
 //		addSequential(new DriveWithEncoders(-12));
 		/*
 		addSequential(new Pause(1000));

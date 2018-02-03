@@ -3,21 +3,27 @@ package org.usfirst.frc.team1732.robot.commands;
 import static org.usfirst.frc.team1732.robot.Robot.driveTrain;
 
 import org.usfirst.frc.team1732.robot.Robot;
-import org.usfirst.frc.team1732.robot.subsystems.EncoderReader;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class DriveWithEncoders extends Command {
+	
+	public static double P = 0.6;
+	public static double I = 0.0;
+	public static double D = 0.6;
+	
+	public static double DIVISOR = 0.4;
+	
+	public static double INCHES = 36;
 
-	private static PIDController leftDistance = new PIDController(0.7,0.0,0.5, new PIDSource() { //PID = multiplier, error to voltage check, overshoot adjustment
+	private static PIDController leftDistance = new PIDController(P, I, D, new PIDSource() { //PID = multiplier, error to voltage check, overshoot adjustment
 		@Override
 		public void setPIDSourceType(PIDSourceType pidSource) {}
 		@Override
@@ -26,13 +32,13 @@ public class DriveWithEncoders extends Command {
 		}
 		@Override
 		public double pidGet() {
-			double val =  (inches - Robot.driveTrain.getLeftDistance()) / (inches*0.5);
+			double val =  (inches - Robot.driveTrain.getLeftDistance()) / (inches*DIVISOR);
 			System.out.println("Left PIDGet: " + val);
 			return val;
 		}
 		
 	}, System.out::println);
-	private static PIDController rightDistance = new PIDController(0.7,0.0,0.5, new PIDSource() {
+	private static PIDController rightDistance = new PIDController(P, I, D, new PIDSource() {
 		@Override
 		public void setPIDSourceType(PIDSourceType pidSource) {}
 		@Override
@@ -41,7 +47,7 @@ public class DriveWithEncoders extends Command {
 		}
 		@Override
 		public double pidGet() {
-			return (inches - Robot.driveTrain.getRightDistance()) / (inches*0.5);
+			return (inches - Robot.driveTrain.getRightDistance()) / (inches*DIVISOR);
 		}
 		
 	}, System.out::println);
@@ -52,7 +58,6 @@ public class DriveWithEncoders extends Command {
 	}
 	
 	private static double inches; //Setpoint
-	private double output = 0;
 	private final double TOLERANCE = 0.1;
 	
 		
