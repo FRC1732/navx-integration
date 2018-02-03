@@ -11,22 +11,29 @@ public class DrivingAroundLikeHentaiLord extends CommandGroup {
 
 	public DrivingAroundLikeHentaiLord() {
 		System.out.println("This is happening, but you're just wrong, kiddo.");
-		addSequential(new DriveWithEncoders3(10));
+		addSequential(new DriveWithEncoders(36));
+//		addSequential(new DriveWithEncoders(-12));
+		/*
+		addSequential(new Pause(1000));
 		addSequential(new TurnToAngleWithEncoders(90));
 		//addSequential(new TurnToAngle(90));
-		addSequential(new Pause(2000));
-		addSequential(new DriveWithEncoders3(10));
+		addSequential(new Pause(750));
+		addSequential(new DriveWithEncoders(12));
+		addSequential(new Pause(1000));
 		addSequential(new TurnToAngleWithEncoders(90));
 		//addSequential(new TurnToAngle(180));
-		addSequential(new Pause(2000));
-		addSequential(new DriveWithEncoders3(10));
+		addSequential(new Pause(750));
+		addSequential(new DriveWithEncoders(12));
+		addSequential(new Pause(1000));
 		addSequential(new TurnToAngleWithEncoders(90));
 		//addSequential(new TurnToAngle(270));
-		addSequential(new Pause(2000));
-		addSequential(new DriveWithEncoders3(10));
+		addSequential(new Pause(750));
+		addSequential(new DriveWithEncoders(12));
+		addSequential(new Pause(1000));
 		addSequential(new TurnToAngleWithEncoders(90));
 		//addSequential(new TurnToAngle(0));
-		addSequential(new Pause(2000));
+		addSequential(new Pause(750));
+		*/
 		
 
 		// To run multiple commands at the same time,

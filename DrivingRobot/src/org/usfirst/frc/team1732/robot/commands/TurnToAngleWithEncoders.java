@@ -42,13 +42,13 @@ public class TurnToAngleWithEncoders extends Command {
 		}
 		
 		if (rotateDistance > 0) {
-			if (leftInches >= rotateDistance - 0.2 || rightInches <= -rotateDistance + 0.2) {
+			if (leftInches >= rotateDistance - 0.05 || rightInches <= -rotateDistance + 0.05) {
 				Robot.driveTrain.stop();
 				stop++;
 			}
 		}
 		else if (rotateDistance < 0){
-			if (leftInches <= rotateDistance + 0.2 || rightInches >= -rotateDistance - 0.2) {
+			if (leftInches <= rotateDistance + 0.05 || rightInches >= -rotateDistance - 0.05) {
 				Robot.driveTrain.stop();
 				stop++;
 			}

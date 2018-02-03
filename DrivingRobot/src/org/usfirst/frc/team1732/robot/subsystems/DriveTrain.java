@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -35,8 +36,11 @@ public class DriveTrain extends Subsystem {
 		angleControl = new TurnToAngle(0, false);
 	}
 
-	private final double INCHES_PER_PULSE = 1.0 / 100;
+	private final double INCHES_PER_PULSE = 1.0 / 120;
 	private final double ROBOT_DIAMETER = 26;
+	
+	private static final double LEFT_SPEED = 0.9;
+	private static final double RIGHT_SPEED = 1.0;
 
 	// Motor Declaration
 	private final TalonSRX leftMaster = new TalonSRX(RobotMap.LEFT_MASTER_MOTOR_DEVICE_NUMBER);
@@ -61,7 +65,11 @@ public class DriveTrain extends Subsystem {
 	public static final double encoderP = 0.03; // 0.02
 	public static final double encoderI = 0;
 	public static final double encoderD = 0;
+    public static final double ENCODER_DEADBAND_INCHES = 3; // 6
 	public static final double errorDifferenceScalar = 0.045; // 0.035
+
+	public static final double ENCODER_IZONE = 20;
+	public static final double ENCODER_IZONE_I = 0.0004;
 
 	public static final double RIGHT_PERCENTAGE_FORWARD = 1;// 0.968;
 	public static final double RIGHT_PERCENTAGE_BACKWARD = 1;
@@ -86,25 +94,27 @@ public class DriveTrain extends Subsystem {
 	private void configureEncoders() {
 		leftEncoder.setDistancePerPulse(INCHES_PER_PULSE);
 		rightEncoder.setDistancePerPulse(INCHES_PER_PULSE);
+		leftEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
+		rightEncoderPID.setAbsoluteTolerance(ENCODER_DEADBAND_INCHES);
 	}
 
 	public void initDefaultCommand() {
-		// setDefaultCommand(new DriveWithJoysticks());
-		setDefaultCommand(new DriveWithArcade());
+		setDefaultCommand(new DriveWithJoysticks());
+		//setDefaultCommand(new DriveWithArcade());
 		// setDefaultCommand(new DriveWithStick());
 	}
 
 	private static final double PRECISION = 10;
 	// using 50% speed
-	private static final double multiplier = 0.5;
+	private static final double multiplier = 0.7;
 
 	public void driveWithJoysticks(double left, double right) {
 		leftMaster.set(ControlMode.PercentOutput, multiplier * left);
 		// Go forward on the left side as much the left throttle is pushed
 		// upwards
-		
-		System.out.println("Left Encoder Position" + leftEncoder.getDistance());
-		System.out.println("Right Encoder Position" + rightEncoder.getDistance());
+
+		System.out.println("Left Encoder Position" + getLeftDistance());
+		System.out.println("Right Encoder Position" + getRightDistance());
 
 		rightMaster.set(ControlMode.PercentOutput, multiplier * right);
 		// Go forward on the right side as much the right throttle is pushed
@@ -174,6 +184,98 @@ public class DriveTrain extends Subsystem {
 	}
 
 	// AUTON Visaya
+	public void rotateCW(double speed) {
+		// Left is inverted
+		leftMaster.set(ControlMode.PercentOutput, -speed);
+		rightMaster.set(ControlMode.PercentOutput, speed);
+	}
+
+	public void rotateCCW(double speed) {
+		// Right is inverted
+		leftMaster.set(ControlMode.PercentOutput, speed);
+		rightMaster.set(ControlMode.PercentOutput, -speed);
+	}
+
+	public void drive(double speed) {
+		leftMaster.set(ControlMode.PercentOutput, multiplier * speed);
+		rightMaster.set(ControlMode.PercentOutput, multiplier * speed);
+	}
+
+	public void driveIndependant(double leftSpeed, double rightSpeed) {
+		System.out.println("Left Speed: " + leftSpeed);
+		System.out.println("Right Speed: " + rightSpeed);
+		leftMaster.set(ControlMode.PercentOutput, multiplier * leftSpeed * LEFT_SPEED);
+		rightMaster.set(ControlMode.PercentOutput, multiplier * rightSpeed * RIGHT_SPEED);
+	}
+
+	public void stop() {
+		leftMaster.set(ControlMode.PercentOutput, 0);
+		rightMaster.set(ControlMode.PercentOutput, 0);
+	}
+	
+	public double getMultiplier() {
+		return multiplier;
+	}
+
+	public double getLeftEncoder() {
+		return leftEncoder.getDistance();
+	}
+
+	public double getRightEncoder() {
+		return rightEncoder.getDistance();
+	}
+
+	public double getRotateCircumference() {
+		return ROBOT_DIAMETER * Math.PI;
+	}
+
+	public double getRobotRadius() {
+		return ROBOT_DIAMETER / 2;
+	}
+
+	public double getLeftPIDError() {
+		return leftEncoderPID.getError();
+	}
+
+	public double getRightPIDError() {
+		return rightEncoderPID.getError();
+	}
+
+	public void resetEncoderPIDValues() {
+		leftEncoderPID.setPID(encoderP, encoderI, encoderD);
+		rightEncoderPID.setPID(encoderP, encoderI, encoderD);
+	}
+	
+	public void setLeftEncoderSetpoint(double setpoint) {
+		leftEncoderPID.setSetpoint(setpoint);
+	}
+	
+	public void setRightEncoderSetpoint(double setpoint) {
+		rightEncoderPID.setSetpoint(setpoint);
+	}
+	
+	public double getLeftAdjustment() {
+		return leftEncoderPID.getError() * errorDifferenceScalar;
+	} 
+	
+	public double getRightAdjustment() {
+		return rightEncoderPID.getError() * errorDifferenceScalar;
+	}
+	
+	public void resetEncoders() {
+		leftDistanceTraveled += getLeftDistance();
+		// leftDistanceTraveled += getTalonPosition(leftMaster);
+		rightDistanceTraveled += getRightDistance();
+		// rightDistanceTraveled += getTalonPosition(rightMaster);
+		// this.resetTalonSRXPositions();
+		leftEncoder.reset();
+		rightEncoder.reset();
+	}
+
+	// 2017 AUTON
+	private static void voidMethod(double d) {
+	}
+	
 	public void driveRaw(double left, double right) {
 		driveRawLimit(left, right, -1, 1);
 	}
@@ -217,68 +319,6 @@ public class DriveTrain extends Subsystem {
 		}
 	}
 
-	public void rotateCW(double speed) {
-		// Left is inverted
-		leftMaster.set(ControlMode.PercentOutput, -speed);
-		rightMaster.set(ControlMode.PercentOutput, speed);
-	}
-
-	public void rotateCCW(double speed) {
-		// Right is inverted
-		leftMaster.set(ControlMode.PercentOutput, speed);
-		rightMaster.set(ControlMode.PercentOutput, -speed);
-	}
-
-	public void drive(double speed) {
-		leftMaster.set(ControlMode.PercentOutput, multiplier * speed);
-		rightMaster.set(ControlMode.PercentOutput, multiplier * speed);
-	}
-	
-	public void driveIndependant(double leftSpeed, double rightSpeed) {
-		leftMaster.set(ControlMode.PercentOutput, multiplier * leftSpeed);
-		rightMaster.set(ControlMode.PercentOutput, multiplier * rightSpeed);
-	}
-
-	public void stop() {
-		leftMaster.set(ControlMode.PercentOutput, 0);
-		rightMaster.set(ControlMode.PercentOutput, 0);
-	}
-	
-	public double getLeftEncoder() {
-		return leftEncoder.getDistance();
-	}
-	
-	public double getRightEncoder() {
-		return rightEncoder.getDistance();
-	}
-	
-	public double getRotateCircumference() {
-		return ROBOT_DIAMETER * Math.PI;
-	}
-	
-	public double getRobotRadius(){
-		return ROBOT_DIAMETER / 2;
-	}
-	
-	
-	//2017 AUTON
-	private static void voidMethod(double d) {
-	}
-
-	public void setLeftEncoderSetpoint(double setpoint) {
-		leftEncoderPID.setSetpoint(setpoint);
-	}
-
-	/**
-	 * Sets the right encoder setpoint in inches
-	 * 
-	 * @param setpoint
-	 *            the setpoint in inches
-	 */
-	public void setRightEncoderSetpoint(double setpoint) {
-		rightEncoderPID.setSetpoint(setpoint);
-	}
-
 	public double getLeftPIDOutput() {
 		return leftEncoderPID.get();
 	}
@@ -296,16 +336,6 @@ public class DriveTrain extends Subsystem {
 	private double leftDistanceTraveled = 0;
 	private double rightDistanceTraveled = 0;
 
-	public void resetEncoders() {
-		leftDistanceTraveled += getLeftDistance();
-		// leftDistanceTraveled += getTalonPosition(leftMaster);
-		rightDistanceTraveled += getRightDistance();
-		// rightDistanceTraveled += getTalonPosition(rightMaster);
-		// this.resetTalonSRXPositions();
-		leftEncoder.reset();
-		rightEncoder.reset();
-	}
-
 	public double getLeftRightAdjustment() {
 		return (leftEncoderPID.getError() - rightEncoderPID.getError()) * errorDifferenceScalar;
 	}
@@ -321,7 +351,7 @@ public class DriveTrain extends Subsystem {
 	 * @return distance in inches measured by the right encoder
 	 */
 	public double getRightDistance() {
-		return rightEncoder.getDistance();
+		return -rightEncoder.getDistance();
 		// return getTalonPosition(rightMaster);
 	}
 
@@ -357,5 +387,15 @@ public class DriveTrain extends Subsystem {
 
 	public void resetEncoderPID() {
 		setEncoderPIDS(encoderP, encoderI, encoderD);
+	}
+	
+	public void setLeft(double per) {
+		System.out.println("Left Set to "+per);
+		leftMaster.set(ControlMode.PercentOutput, per);
+	}
+	
+	public void setRight(double per) {
+		System.out.println("Right Set to "+per);
+		rightMaster.set(ControlMode.PercentOutput, per);
 	}
 }

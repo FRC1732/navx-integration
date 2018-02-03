@@ -12,6 +12,8 @@ public class DriveWithEncoders3 extends Command {
 	private double inches = 0;
 	private double stop = 0;
 	private double speed = 1;
+	
+	private final double MARGIN = Robot.driveTrain.getMultiplier() + 6.5;
 
 	public DriveWithEncoders3(double inches) {
 		requires(Robot.driveTrain);
@@ -36,13 +38,13 @@ public class DriveWithEncoders3 extends Command {
 		}
 				
 		if (inches > 0) {
-			if (leftInches >= inches - 0.2 || rightInches >= inches - 0.2) {
+			if (leftInches >= inches - MARGIN || rightInches >= inches - MARGIN) {
 				Robot.driveTrain.stop();
 				stop++;
 			}
 		}
 		else if (inches < 0){
-			if (leftInches <= inches + 0.2 || rightInches <= inches + 0.2) {
+			if (leftInches <= inches + MARGIN || rightInches <= inches + MARGIN) {
 				Robot.driveTrain.stop();
 				stop++;
 			}

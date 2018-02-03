@@ -17,12 +17,12 @@ public class AutonRotate3 extends CommandGroup {
 		Robot.ahrs.zeroYaw();
 
 		addSequential(new TurnToAngleWithEncoders(90));
-		addSequential(new Pause(5000));
+		addSequential(new Pause(1000));
 		addSequential(new TurnToAngleWithEncoders(90));
-		addSequential(new Pause(5000));
+		addSequential(new Pause(1000));
 		addSequential(new TurnToAngleWithEncoders(90));
-		addSequential(new Pause(5000));
-		addSequential(new TurnToAngleWithEncoders(-270));
+		addSequential(new Pause(1000));
+		addSequential(new TurnToAngleWithEncoders(90));
 
 		// To run multiple commands at the same time,
 		// use addParallel()

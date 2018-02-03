@@ -124,7 +124,7 @@ public class Robot extends IterativeRobot {
 		//autonomousCommand = new AutonRotate2();
 		autonomousCommand = new DrivingAroundLikeHentaiLord();
 		//autonomousCommand = new AutonRotate3();
-		//autonomousCommand = new DriveInCircle(10, true);
+		//autonomousCommand = new DriveInCircle(50, true);
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -158,8 +158,9 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().removeAll(); // Cancels commands
 		
 		// DriveWithJoysticks cb = new DriveWithJoysticks();
-		// cb.start();
-
+		// cb.start();		
+		Robot.driveTrain.resetEncoders();
+    	Robot.driveTrain.resetEncoderPIDValues();
 	}
 
 	/**
