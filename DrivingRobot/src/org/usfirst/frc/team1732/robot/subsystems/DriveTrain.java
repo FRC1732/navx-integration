@@ -44,13 +44,9 @@ public class DriveTrain extends Subsystem {
 	private static final double RIGHT_SPEED = 1.0;
 
 	// Motor Declaration
-	private final TalonSRX leftMaster = new TalonSRX(RobotMap.LEFT_MASTER_MOTOR_DEVICE_NUMBER);
-	private final TalonSRX left1 = new TalonSRX(RobotMap.LEFT_1_MOTOR_DEVICE_NUMBER);
-	private final TalonSRX left2 = new TalonSRX(RobotMap.LEFT_2_MOTOR_DEVICE_NUMBER);
+	private TalonSRX leftMaster;
 
-	private final TalonSRX rightMaster = new TalonSRX(RobotMap.RIGHT_MASTER_MOTOR_DEVICE_NUMBER);
-	private final TalonSRX right1 = new TalonSRX(RobotMap.RIGHT_1_MOTOR_DEVICE_NUMBER);
-	private final TalonSRX right2 = new TalonSRX(RobotMap.RIGHT_2_MOTOR_DEVICE_NUMBER);
+	private TalonSRX rightMaster;
 
 	// Encoder Declaration & Variables
 	private final Encoder leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_CHANNEL_A, RobotMap.LEFT_ENCODER_CHANNEL_B);
@@ -78,18 +74,23 @@ public class DriveTrain extends Subsystem {
 	public static final double LEFT_PERCENTAGE_BACKWARD = 1;
 
 	private void configureTalons() {		
-		leftMaster.setInverted(true);
-		left1.setInverted(true);
-		left2.setInverted(true);
-		rightMaster.setInverted(false);
-
-		left1.set(ControlMode.Follower, leftMaster.getDeviceID());
-		left2.set(ControlMode.Follower, leftMaster.getDeviceID());
-		right1.set(ControlMode.Follower, rightMaster.getDeviceID());
-		right2.set(ControlMode.Follower, rightMaster.getDeviceID());
-
-		leftMaster.set(ControlMode.PercentOutput, 0);
-		rightMaster.set(ControlMode.PercentOutput, 0);
+//		leftMaster.setInverted(true);
+//		left1.setInverted(true);
+//		left2.setInverted(true);
+//		rightMaster.setInverted(false);
+//
+//		left1.set(ControlMode.Follower, leftMaster.getDeviceID());
+//		left2.set(ControlMode.Follower, leftMaster.getDeviceID());
+//		right1.set(ControlMode.Follower, rightMaster.getDeviceID());
+//		right2.set(ControlMode.Follower, rightMaster.getDeviceID());
+//
+//		leftMaster.set(ControlMode.PercentOutput, 0);
+//		rightMaster.set(ControlMode.PercentOutput, 0);
+		
+		leftMaster = Robot.config.talon("drivetrain.left");
+		rightMaster = Robot.config.talon("drivetrain.right");
+		
+		
 	}
 
 	private void configureEncoders() {

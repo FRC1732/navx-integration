@@ -9,6 +9,7 @@ import org.usfirst.frc.team1732.robot.commands.DrivingAroundLikeHentaiLord;
 import org.usfirst.frc.team1732.robot.commands.PointTurns;
 import org.usfirst.frc.team1732.robot.commands.Pause;
 import org.usfirst.frc.team1732.robot.commands.TurnToAngle;
+import org.usfirst.frc.team1732.robot.conf.Config;
 import org.usfirst.frc.team1732.robot.monitoring.PositionMonitoring;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team1732.robot.subsystems.ExampleSubsystem;
@@ -38,6 +39,8 @@ public class Robot extends IterativeRobot {
 
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
+	public static Config config;
+	
 	public static OI oi;
 	public static DriveTrain driveTrain;
 	public static Grabber grabber;
@@ -57,6 +60,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		config = Config.load();
+		
 		System.out.println("YO, THE ROBOT IS STARTING THOUGH");
 		try {
 			System.out.println("Robot turning on");
