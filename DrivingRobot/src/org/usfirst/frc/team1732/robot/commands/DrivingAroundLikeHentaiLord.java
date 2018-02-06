@@ -9,7 +9,7 @@ public class DrivingAroundLikeHentaiLord extends CommandGroup {
 
 	public DrivingAroundLikeHentaiLord() {
 		System.out.println("This is happening, but you're just wrong, kiddo.");
-		addSequential(new DriveWithEncoders(DriveWithEncoders.INCHES));
+		addSequential(new DriveWithEncoders(12));
 //		addSequential(new DriveWithEncoders(-12));
 		/*
 		addSequential(new Pause(1000));

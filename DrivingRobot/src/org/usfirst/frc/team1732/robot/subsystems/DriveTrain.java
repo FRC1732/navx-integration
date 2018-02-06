@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1732.robot.subsystems;
 
+import org.usfirst.frc.team1732.robot.Robot;
 //import org.omg.CORBA.TRANSACTION_UNAVAILABLE;
 import org.usfirst.frc.team1732.robot.RobotMap;
 import org.usfirst.frc.team1732.robot.commands.DriveWithArcade;
@@ -76,7 +77,7 @@ public class DriveTrain extends Subsystem {
 	public static final double LEFT_PERCENTAGE_FORWARD = 1;// 0.978;
 	public static final double LEFT_PERCENTAGE_BACKWARD = 1;
 
-	private void configureTalons() {
+	private void configureTalons() {		
 		leftMaster.setInverted(true);
 		left1.setInverted(true);
 		left2.setInverted(true);
@@ -202,8 +203,10 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void driveIndependant(double leftSpeed, double rightSpeed) {
+		/*
 		System.out.println("Left Speed: " + leftSpeed);
 		System.out.println("Right Speed: " + rightSpeed);
+		*/
 		leftMaster.set(ControlMode.PercentOutput, multiplier * leftSpeed * LEFT_SPEED);
 		rightMaster.set(ControlMode.PercentOutput, multiplier * rightSpeed * RIGHT_SPEED);
 	}

@@ -15,13 +15,13 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class DriveWithEncoders extends Command {
 	
-	public static double P = 0.6;
-	public static double I = 0.1;
-	public static double D = 0.6;
+	public static double P = 0.68;
+	public static double I = 0;
+	public static double D = 0;
 	
-	public static double DIVISOR = 0.4;
+	public static double DIVISOR = 1.0;
 	
-	public static double INCHES = 36;
+	//public static double INCHES = 36;
 
 	private static PIDController leftDistance = new PIDController(P, I, D, new PIDSource() { //PID = multiplier, error to voltage check, overshoot adjustment
 		@Override
@@ -80,6 +80,8 @@ public class DriveWithEncoders extends Command {
     }
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	System.out.println("Left OUTPUT: " + leftDistance.get());
+    	System.out.println("Right OUTPUT: " + rightDistance.get());
     	driveTrain.driveIndependant(leftDistance.get(), rightDistance.get());
     	
     	/*
