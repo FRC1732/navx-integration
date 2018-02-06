@@ -40,12 +40,13 @@ public class Config {
 			if (getValue(path + ".0.reversed", false)) {
 				t.setInverted(true);
 			}
-			int i = 0;
+			
 			TalonSRX tf;
-			while (getValue(path + "." + i, OBJ) instanceof JSONObject) {
-				tf = new TalonSRX(getValue(path + "." + i + ".num", 0));
-				if (getValue(path + "." + i + ".reversed", false)) {
-					tf.setInverted(true);
+			JSONArray a = getValue(path, new JSONArray());
+			for (int i = 1; i < a.size(); i++) {
+				tf = new TalonSRX(((Long) ((JSONObject)a.get(i)).get("num")).intValue());
+				if (((JSONObject)a.get(i)).get("reversed") != null) {
+					tf.setInverted((Boolean) ((JSONObject)a.get(i)).get("reversed"));
 				}
 				tf.set(ControlMode.Follower, t.getDeviceID());
 			}
@@ -160,7 +161,7 @@ public class Config {
 			loaded = false;
 		}
 		if(!loaded) {
-			hold();
+//			hold();
 		}
 
 	}
