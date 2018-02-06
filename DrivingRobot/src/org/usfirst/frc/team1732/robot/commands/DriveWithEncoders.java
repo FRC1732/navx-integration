@@ -19,7 +19,7 @@ public class DriveWithEncoders extends Command {
 	public static double I = 0;
 	public static double D = 0;
 	
-	public static double DIVISOR = 1.0;
+	public static double INCHES_OFF = 12;// how far away the PID loop should kick in.
 	
 	//public static double INCHES = 36;
 
@@ -32,7 +32,7 @@ public class DriveWithEncoders extends Command {
 		}
 		@Override
 		public double pidGet() {
-			double val =  (inches - Robot.driveTrain.getLeftDistance()) / (inches*DIVISOR);
+			double val =  (inches - Robot.driveTrain.getLeftDistance()) / (INCHES_OFF);
 //			System.out.println("Left PIDGet: " + val);
 			return val;
 		}
@@ -47,7 +47,7 @@ public class DriveWithEncoders extends Command {
 		}
 		@Override
 		public double pidGet() {
-			return (inches - Robot.driveTrain.getRightDistance()) / (inches*DIVISOR);
+			return (inches - Robot.driveTrain.getRightDistance()) / (INCHES_OFF);
 		}
 		
 	}, System.out::println);
