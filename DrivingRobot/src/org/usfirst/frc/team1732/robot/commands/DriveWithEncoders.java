@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  */
 public class DriveWithEncoders extends Command {
 	
-	public static double P = 0.68;
+	public static double P = 1.0;
 	public static double I = 0;
 	public static double D = 0;
 	
