@@ -1,14 +1,7 @@
 
 package org.usfirst.frc.team1732.robot;
 
-import org.usfirst.frc.team1732.robot.commands.AutonRotate;
-import org.usfirst.frc.team1732.robot.commands.AutonRotate2;
-import org.usfirst.frc.team1732.robot.commands.AutonRotate3;
-import org.usfirst.frc.team1732.robot.commands.DriveInCircle;
 import org.usfirst.frc.team1732.robot.commands.DrivingAroundLikeHentaiLord;
-import org.usfirst.frc.team1732.robot.commands.PointTurns;
-import org.usfirst.frc.team1732.robot.commands.Pause;
-import org.usfirst.frc.team1732.robot.commands.TurnToAngle;
 import org.usfirst.frc.team1732.robot.conf.Config;
 import org.usfirst.frc.team1732.robot.monitoring.PositionMonitoring;
 import org.usfirst.frc.team1732.robot.subsystems.DriveTrain;
@@ -21,10 +14,8 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -121,6 +112,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		config = Config.load();
 		/*
 		 * PUT AUTONOMOUS COMMANDS BELOW HERE:
 		 */

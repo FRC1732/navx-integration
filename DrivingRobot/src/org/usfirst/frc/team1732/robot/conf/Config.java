@@ -120,7 +120,16 @@ public class Config {
 		
 		try {
 			if (defualt instanceof Integer) {
-				cur = ((Long) cur).intValue();
+				cur = ((Number) cur).intValue();
+			}
+			if (defualt instanceof Long) {
+				cur = ((Number) cur).longValue();
+			}
+			if (defualt instanceof Double) {
+				cur = ((Number) cur).doubleValue();
+			}
+			if (defualt instanceof Float) {
+				cur = ((Number) cur).floatValue();
 			}
 			if (cur == null) {
 				return defualt;

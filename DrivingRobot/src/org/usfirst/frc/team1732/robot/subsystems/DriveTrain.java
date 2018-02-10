@@ -37,11 +37,13 @@ public class DriveTrain extends Subsystem {
 		angleControl = new TurnToAngle(0, false);
 	}
 
-	private final double INCHES_PER_PULSE = 1.0 / 120;
+	private final double INCHES_PER_PULSE = 0.008680656766459;//144/(17385.75, 17738, 17483.5, 17402, 17388)
+	//0.0086771635444202, 0.0086841499884978, 0.0082826452698331, 0.008118164392829
+	//0.008236337117854,  0.0082749109297782, 0.0082749109297782, 0.0082815734989648
 	private final double ROBOT_DIAMETER = 26;
 	
-	private static final double LEFT_SPEED = 0.9;
-	private static final double RIGHT_SPEED = 1.0;
+	private static final double LEFT_SPEED = 1.0;
+	private static final double RIGHT_SPEED = 1.0;//151 / (17402, 17388)
 
 	// Motor Declaration
 	private TalonSRX leftMaster;
@@ -345,7 +347,7 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public double getLeftDistance() {
-		return leftEncoder.getDistance();
+		return -leftEncoder.getDistance();
 		// return getTalonPosition(leftMaster);
 	}
 
@@ -355,7 +357,7 @@ public class DriveTrain extends Subsystem {
 	 * @return distance in inches measured by the right encoder
 	 */
 	public double getRightDistance() {
-		return -rightEncoder.getDistance();
+		return rightEncoder.getDistance();
 		// return getTalonPosition(rightMaster);
 	}
 

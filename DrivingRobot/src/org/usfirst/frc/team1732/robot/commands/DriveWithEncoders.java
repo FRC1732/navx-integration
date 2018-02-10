@@ -8,66 +8,67 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
  *
  */
 public class DriveWithEncoders extends Command {
 	
-	public static double P = 1.0;
-	public static double I = 0;
-	public static double D = 0;
+	public double P = 0.3;
+	public double I = 0;
+	public double D = 0;
 	
-	public static double DIVISOR = 1.0;
+	public double INCHES_OFF = 24.0;
 	
 	//public static double INCHES = 36;
-
-	private static PIDController leftDistance = new PIDController(P, I, D, new PIDSource() { //PID = multiplier, error to voltage check, overshoot adjustment
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {}
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
-		}
-		@Override
-		public double pidGet() {
-			double val =  (inches - Robot.driveTrain.getLeftDistance()) / (inches*DIVISOR);
-//			System.out.println("Left PIDGet: " + val);
-			return val;
-		}
-		
-	}, System.out::println);
-	private static PIDController rightDistance = new PIDController(P, I, D, new PIDSource() {
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {}
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
-		}
-		@Override
-		public double pidGet() {
-			return (inches - Robot.driveTrain.getRightDistance()) / (inches*DIVISOR);
-		}
-		
-	}, System.out::println);
+	private PIDController leftDistance;
+	private PIDController rightDistance;
 	
-	static {
-		LiveWindow.add(leftDistance);
-    	LiveWindow.add(rightDistance);
-	}
-	
-	private static double inches; //Setpoint
+	private double inches; //Setpoint
 	private final double TOLERANCE = 0.1;
 	
 		
     public DriveWithEncoders(double inches) {
         requires(Robot.driveTrain);
-		DriveWithEncoders.inches = inches;
+		this.inches = inches;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+//    	P = Robot.config.getValue("drivetrain.p", P);
+//    	I = Robot.config.getValue("drivetrain.i", I);
+//    	D = Robot.config.getValue("drivetrain.d", D);
+//    	INCHES_OFF = Robot.config.getValue("drivetrain.inches", INCHES_OFF);
+    	System.out.println(P);
+    	System.out.println(I);
+    	System.out.println(D);
+    	System.out.println(INCHES_OFF);
+    	leftDistance = new PIDController(P, I, D, new PIDSource() { //PID = multiplier, error to voltage check, overshoot adjustment
+    		@Override
+    		public void setPIDSourceType(PIDSourceType pidSource) {}
+    		@Override
+    		public PIDSourceType getPIDSourceType() {
+    			return PIDSourceType.kDisplacement;
+    		}
+    		@Override
+    		public double pidGet() {
+    			return (inches - Robot.driveTrain.getLeftDistance()) / (INCHES_OFF);
+    		}
+    		
+    	}, this::u);
+    	rightDistance = new PIDController(P, I, D, new PIDSource() {
+    		@Override
+    		public void setPIDSourceType(PIDSourceType pidSource) {}
+    		@Override
+    		public PIDSourceType getPIDSourceType() {
+    			return PIDSourceType.kDisplacement;
+    		}
+    		@Override
+    		public double pidGet() {
+    			return (inches - Robot.driveTrain.getRightDistance()) / (INCHES_OFF);
+    		}
+    		
+    	}, this::u);
     	Robot.driveTrain.resetEncoders();
     	
     	leftDistance.setAbsoluteTolerance(TOLERANCE);
@@ -78,10 +79,11 @@ public class DriveWithEncoders extends Command {
     	
     	//Robot.driveTrain.resetEncoderPIDValues();
     }
+    private void u(double u) {}
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	System.out.println("Left OUTPUT: " + leftDistance.get());
-    	System.out.println("Right OUTPUT: " + rightDistance.get());
+//    	System.out.println("Left OUTPUT: " + leftDistance.get());
+//    	System.out.println("Right OUTPUT: " + rightDistance.get());
     	driveTrain.driveIndependant(leftDistance.get(), rightDistance.get());
     	
     	/*
