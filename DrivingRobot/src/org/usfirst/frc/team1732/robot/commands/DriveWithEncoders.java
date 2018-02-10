@@ -18,51 +18,13 @@ public class DriveWithEncoders extends Command {
 	public double I = 0;
 	public double D = 0;
 	
-<<<<<<< HEAD
 	public double INCHES_OFF = 24.0;
 	
 	//public static double INCHES = 36;
 	private PIDController leftDistance;
 	private PIDController rightDistance;
-=======
-	public static double INCHES_OFF = 12;// how far away the PID loop should kick in.
 	
 	//public static double INCHES = 36;
-
-	private static PIDController leftDistance = new PIDController(P, I, D, new PIDSource() { //PID = multiplier, error to voltage check, overshoot adjustment
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {}
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
-		}
-		@Override
-		public double pidGet() {
-			double val =  (inches - Robot.driveTrain.getLeftDistance()) / (INCHES_OFF);
-//			System.out.println("Left PIDGet: " + val);
-			return val;
-		}
-		
-	}, System.out::println);
-	private static PIDController rightDistance = new PIDController(P, I, D, new PIDSource() {
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {}
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
-		}
-		@Override
-		public double pidGet() {
-			return (inches - Robot.driveTrain.getRightDistance()) / (INCHES_OFF);
-		}
-		
-	}, System.out::println);
-	
-	static {
-		LiveWindow.add(leftDistance);
-    	LiveWindow.add(rightDistance);
-	}
->>>>>>> 770d07ba6f0d5f7b84ce8c92defcd6ad9dc44ada
 	
 	private double inches; //Setpoint
 	private final double TOLERANCE = 0.1;
